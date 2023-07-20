@@ -1,0 +1,111 @@
+:root
+{
+    --background-color: #fff;
+    --shadow-color: #aaa;
+}
+
+body
+{
+    background-color: var(--background-color);
+    box-sizing: border-box;
+    color: var(--primary-color);
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+.container-theme-toggler
+{
+    position: absolute;
+    top: 1em;
+    right: 2em;
+}
+
+.container-calendar
+{
+    align-items: center;
+    display: flex;
+    flex-flow: column nowrap;
+    font-family: arial, helvetica, sans-serif;
+    height: clamp(16em, 50vh, 50vh);
+    justify-content: flex-start;
+    width: clamp(450px, 50%, 600px);
+}
+
+.calendar
+{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 3em 0 0 0;
+    width: clamp(450px, 50%, 600px);
+    text-align: center;
+}
+
+.calendar-top-bar
+{
+    display: flex;
+    flex-flow: row nowrap;
+    list-style: none;
+    justify-content: space-around;
+    margin: 0;
+    padding: 0;
+}
+
+.calendar-days
+{
+    cursor: default;
+    display: flex;
+    flex-flow: row nowrap;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.calendar-weekday,
+.calendar-weekend
+{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0.5em 0 0.5em 0;
+    width: calc(100% / 7);
+}
+
+.calendar-dates
+{
+    box-sizing: border-box;
+    display: flex;
+    flex-flow: row wrap;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.calendar-date
+{
+    box-sizing: border-box;
+    cursor: pointer;
+    margin: 0.5em 0 0.5em 0;
+    padding: 0;
+    position: relative;
+    width: calc(100% / 7);
+    z-index: 0;
+}
+
+.calendar-date-hover::before
+{
+    background-color: var(--shadow-color);
+    border-radius: 50%;
+    content: "";
+    height: 2em;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 2em;
+    z-index: -1;
+}
+
+.calendar-date-dim
+{
+    color: var(--dim-color);
+}
