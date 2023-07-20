@@ -12,6 +12,7 @@ body
     margin: 0;
     padding: 0;
     position: relative;
+    touch-action: manipulation;
 }
 
 .container-theme-toggler
