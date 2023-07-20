@@ -29,7 +29,15 @@ body
     font-family: arial, helvetica, sans-serif;
     height: clamp(16em, 50vh, 50vh);
     justify-content: flex-start;
-    width: clamp(450px, 50%, 600px);
+    width: clamp(250px, 50%, 600px);
+}
+
+@media only screen and (max-width: 450px)
+{
+    .container-calendar
+    {
+        width: 100vw;
+    }
 }
 
 .calendar
@@ -37,7 +45,6 @@ body
     box-sizing: border-box;
     margin: 0;
     padding: 3em 0 0 0;
-    width: clamp(450px, 50%, 600px);
     text-align: center;
 }
 
