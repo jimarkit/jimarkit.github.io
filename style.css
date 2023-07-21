@@ -99,6 +99,21 @@ body
     z-index: 0;
 }
 
+.calendar-date:hover::before
+{
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    content: "";
+    height: 2em;
+    left: 50%;
+    opacity: 0.5;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 2em;
+    z-index: -1;
+}
+
 .calendar-date-hover::before
 {
     background-color: var(--primary-color);
