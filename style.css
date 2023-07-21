@@ -116,5 +116,5 @@ body
 
 .calendar-date-dim
 {
-    color: var(--dim-color);
+    opacity: 0.5;
 }
