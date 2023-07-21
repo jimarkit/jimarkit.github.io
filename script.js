@@ -69,7 +69,8 @@ class Calendar
         for (let index = 0; index < dayToLeft; index++) 
         {
             let nodeCloned = this.#domTemplateDate.cloneNode();
-            nodeCloned.innerText = (this.#arrNumOfDays[date.getMonth() - 1] - index).toString()
+            let nPrevMonth = date.getMonth() > 0 ? date.getMonth() - 1 : 11;
+            nodeCloned.innerText = (this.#arrNumOfDays[nPrevMonth] - index).toString()
             nodeCloned.classList.add("calendar-date-dim")
             nodeCloned.onclick = () => {
                 this.#dateSelected = new Date(nYear, nMonth - 1, this.#arrNumOfDays[date.getMonth() - 1] - index);
