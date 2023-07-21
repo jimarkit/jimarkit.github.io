@@ -9,11 +9,15 @@ body
     touch-action: manipulation;
 }
 
-.container-theme-toggler
+.app-top-bar
 {
-    position: absolute;
-    top: 1em;
-    right: 2em;
+    box-sizing: border-box;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+    margin: 0;
+    padding: 1em 1.5em;
+    width: 100vw;
 }
 
 .container-calendar
@@ -31,7 +35,7 @@ body
 {
     box-sizing: border-box;
     margin: 0;
-    padding: 3em 0 0 0;
+    padding: 1em 0 0 0;
     text-align: center;
     width: 100%;
 }
