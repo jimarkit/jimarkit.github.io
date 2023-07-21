@@ -32,9 +32,9 @@ class Calendar
 
     #RefreshCalendar()
     {
-        let nYear = this.#SelectDate.getFullYear() 
-        let nMonth = this.#SelectDate.getMonth() 
-        let nDate = this.#SelectDate.getDate() 
+        let nYear = this.#dateSelected.getFullYear() 
+        let nMonth = this.#dateSelected.getMonth() 
+        let nDate = this.#dateSelected.getDate() 
 
         let date = new Date(nYear, nMonth, 1)
         let dateLastDay = new Date(nYear, nMonth, this.#arrNumOfDays[nMonth])
