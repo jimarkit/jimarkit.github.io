@@ -127,8 +127,9 @@ class ThemeHandler
 
     #CheckPrefersColorScheme()
     {
-        let strBackgroundColor = getComputedStyle(this.#domRoot).getPropertyValue("--background-color");
-        this.#bIsLightTheme = strBackgroundColor == this.#strWhite;
+        // let strBackgroundColor = getComputedStyle(this.#domRoot).getPropertyValue("--background-color");
+        // this.#bIsLightTheme = strBackgroundColor == this.#strWhite;
+        this.#bIsLightTheme = !window.matchMedia('(prefers-color-scheme: dark)').matches;
         return this.#bIsLightTheme;
     }
 
