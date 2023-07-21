@@ -15,37 +15,29 @@ class Calendar
 
     constructor()
     {
-        let date = new Date();
-        this.#RefreshDates(date.getFullYear(), date.getMonth());
+        this.#RefreshCalendar();
 
         this.#domPrevMonth.addEventListener("click", event => 
         {
-            this.#dateSelected = new Date(this.#dateSelected.getFullYear(), this.#dateSelected.getMonth() - 1, this.#dateSelected.getDate());
-            this.#RefreshDates(this.#dateSelected.getFullYear(), this.#dateSelected.getMonth());
+            this.#SelectDate(this.#dateSelected.getFullYear(), this.#dateSelected.getMonth() - 1, this.#dateSelected.getDate());
+            this.#RefreshCalendar();
         })
 
         this.#domNextMonth.addEventListener("click", event => 
         {
-            this.#dateSelected = new Date(this.#dateSelected.getFullYear(), this.#dateSelected.getMonth() + 1, this.#dateSelected.getDate());
-            this.#RefreshDates(this.#dateSelected.getFullYear(), this.#dateSelected.getMonth());
+            this.#SelectDate(this.#dateSelected.getFullYear(), this.#dateSelected.getMonth() + 1, this.#dateSelected.getDate());;
+            this.#RefreshCalendar();
         })
     }
 
-    #RefreshDates(nYear, nMonth)
+    #RefreshCalendar()
     {
-        if (nMonth == -1)
-        {
-            nYear = nYear - 1;
-            nMonth = 11;
-        }
-        else if (nMonth == 12)
-        {
-            nYear = nYear + 1;
-            nMonth = 0;
-        }
-    
+        let nYear = this.#SelectDate.getFullYear() 
+        let nMonth = this.#SelectDate.getMonth() 
+        let nDate = this.#SelectDate.getDate() 
+
         let date = new Date(nYear, nMonth, 1)
-        let dateLastDay = new Date(nYear, nMonth, this.#arrNumOfDays[date.getMonth()])
+        let dateLastDay = new Date(nYear, nMonth, this.#arrNumOfDays[nMonth])
         let dayToLeft = date.getDay()
         let dayToRight = 7 - dateLastDay.getDay()
 
@@ -54,14 +46,13 @@ class Calendar
             this.#domDates.removeChild(this.#domDates.children[0]);
         }
     
-        for (let index = 0; index < this.#arrNumOfDays[date.getMonth()]; index++)
+        for (let index = 0; index < this.#arrNumOfDays[nMonth]; index++)
         {
             let nodeCloned = this.#domTemplateDate.cloneNode();
             nodeCloned.innerText = (index + 1).toString()
             nodeCloned.onclick = () => {
-                this.#dateSelected = new Date(nYear, nMonth, index + 1);
-                console.log(this.#dateSelected);
-                this.#RefreshDates(nYear, nMonth)
+                this.#SelectDate(nYear, nMonth, index + 1);
+                this.#RefreshCalendar();
             }
             this.#domDates.append(nodeCloned)
         }
@@ -69,13 +60,11 @@ class Calendar
         for (let index = 0; index < dayToLeft; index++) 
         {
             let nodeCloned = this.#domTemplateDate.cloneNode();
-            let nPrevMonth = date.getMonth() > 0 ? date.getMonth() - 1 : 11;
-            nodeCloned.innerText = (this.#arrNumOfDays[nPrevMonth] - index).toString()
-            nodeCloned.classList.add("calendar-date-dim")
+            nodeCloned.innerText = this.#arrNumOfDays[nMonth > 0 ? nMonth - 1 : 11] - index;
+            nodeCloned.classList.add("calendar-date-dim");
             nodeCloned.onclick = () => {
-                this.#dateSelected = new Date(nYear, nMonth - 1, this.#arrNumOfDays[date.getMonth() - 1] - index);
-                console.log(this.#dateSelected);
-                this.#RefreshDates(nYear, nMonth - 1)
+                this.#SelectDate(nYear, nMonth - 1, this.#arrNumOfDays[nMonth > 0 ? nMonth - 1 : 11] - index);
+                this.#RefreshCalendar();
             }
             this.#domDates.insertBefore(nodeCloned, this.#domDates.children[0])
         }
@@ -86,34 +75,40 @@ class Calendar
             nodeCloned.innerText = (index + 1).toString()
             nodeCloned.classList.add("calendar-date-dim")
             nodeCloned.onclick = () => {
-                this.#dateSelected = new Date(nYear, nMonth + 1, index + 1);
-                console.log(this.#dateSelected);
-                this.#RefreshDates(nYear, nMonth + 1)
+                this.#SelectDate(nYear, nMonth + 1, index + 1);
+                this.#RefreshCalendar();
             }
             this.#domDates.append(nodeCloned)
         }
 
-        this.#domDates.children[dayToLeft - 1 + this.#dateSelected.getDate()].classList.add("calendar-date-hover");
-        this.#domMonth.innerText = this.#arrMonths[nMonth];
-        this.#domYear.innerText = this.#dateSelected.getFullYear();
+        this.#domDates.children[dayToLeft - 1 + nDate].classList.add("calendar-date-hover");
+        this.#domMonth.innerText = nMonth;
+        this.#domYear.innerText = nYear;
+    }
+
+    #SelectDate(nYear, nMonth, nDate)
+    {
+        if (nMonth < 0)
+        {
+            nYear = nYear - 1;
+            nMonth = 11;
+        }
+        else if (nMonth > 11)
+        {
+            nYear = nYear + 1;
+            nMonth = 0;
+        }
+        this.#dateSelected = new Date(nYear, nMonth, nDate);
     }
 }
 
 class ThemeHandler
 {
+    #bIsLightTheme = true;
+
     #domRoot = document.querySelector(":root");
     #domThemeToggler = document.querySelector(".container-theme-toggler");
-    get domRoot()
-    {
-        return this.#domRoot;
-    }
 
-    #bIsLightTheme = true;
-    get bIsLightTheme()
-    {
-        return this.#bIsLightTheme;
-    }
-    
     #strBlack = "#000";
     #strWhite = "#fff";
     #strThemeLight = "Light";
@@ -127,9 +122,7 @@ class ThemeHandler
 
     #CheckPrefersColorScheme()
     {
-        // let strBackgroundColor = getComputedStyle(this.#domRoot).getPropertyValue("--background-color");
-        // this.#bIsLightTheme = strBackgroundColor == this.#strWhite;
-        this.#bIsLightTheme = !window.matchMedia('(prefers-color-scheme: dark)').matches;
+        this.#bIsLightTheme = window.matchMedia('(prefers-color-scheme: light)').matches;
         return this.#bIsLightTheme;
     }
 

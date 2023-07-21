@@ -1,8 +1,3 @@
-:root
-{
-    --background-color: #fff;
-}
-
 body
 {
     background-color: var(--background-color);
@@ -30,14 +25,6 @@ body
     height: clamp(16em, 50vh, 50vh);
     justify-content: flex-start;
     width: clamp(250px, 50%, 600px);
-}
-
-@media only screen and (max-width: 450px)
-{
-    .container-calendar
-    {
-        width: 100vw;
-    }
 }
 
 .calendar
@@ -99,21 +86,6 @@ body
     z-index: 0;
 }
 
-.calendar-date:hover::before
-{
-    background-color: var(--primary-color);
-    border-radius: 50%;
-    content: "";
-    height: 2em;
-    left: 50%;
-    opacity: 0.5;
-    position: absolute;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 2em;
-    z-index: -1;
-}
-
 .calendar-date-hover::before
 {
     background-color: var(--primary-color);
@@ -132,4 +104,30 @@ body
 .calendar-date-dim
 {
     opacity: 0.5;
+}
+
+@media not screen and (max-width:450px)
+{
+    .calendar-date:hover::before
+    {
+        background-color: var(--primary-color);
+        border-radius: 50%;
+        content: "";
+        height: 2em;
+        left: 50%;
+        opacity: 0.5;
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 2em;
+        z-index: -1;
+    }
+}
+
+@media only screen and (max-width: 450px)
+{
+    .container-calendar
+    {
+        width: 100vw;
+    }
 }
