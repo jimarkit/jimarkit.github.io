@@ -82,7 +82,7 @@ class Calendar
         }
 
         this.#domDates.children[dayToLeft - 1 + nDate].classList.add("calendar-date-hover");
-        this.#domMonth.innerText = nMonth;
+        this.#domMonth.innerText = this.#arrMonths[nMonth];
         this.#domYear.innerText = nYear;
     }
 
