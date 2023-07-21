@@ -171,12 +171,12 @@ class CustomThemeHandler extends ThemeHandler
         if (super.bIsLightTheme)
         {
             super.domRoot.style.setProperty("--dim-color", this.#strDimLight);
-            this.#domThemeToggler.innerText = this.#strThemeLight;
+            this.#domThemeToggler.innerText = this.#strThemeDark;
         }
         else
         {
             super.domRoot.style.setProperty("--dim-color", this.#strDimDark);
-            this.#domThemeToggler.innerText = this.#strThemeDark;
+            this.#domThemeToggler.innerText = this.#strThemeLight;
         }
     }
 
