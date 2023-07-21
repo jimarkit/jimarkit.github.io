@@ -102,6 +102,7 @@ class Calendar
 class ThemeHandler
 {
     #domRoot = document.querySelector(":root");
+    #domThemeToggler = document.querySelector(".container-theme-toggler");
     get domRoot()
     {
         return this.#domRoot;
@@ -112,10 +113,12 @@ class ThemeHandler
     {
         return this.#bIsLightTheme;
     }
-
+    
     #strBlack = "#000";
     #strWhite = "#fff";
-
+    #strThemeLight = "Light";
+    #strThemeDark = "Dark";
+    
     constructor()
     {
         this.#CheckPrefersColorScheme();
@@ -135,11 +138,13 @@ class ThemeHandler
         {
             this.#domRoot.style.setProperty("--primary-color", this.#strBlack);
             this.#domRoot.style.setProperty("--background-color", this.#strWhite);
+            this.#domThemeToggler.innerText = this.#strThemeDark;
         }
         else
         {
             this.#domRoot.style.setProperty("--primary-color", this.#strWhite);
             this.#domRoot.style.setProperty("--background-color", this.#strBlack);
+            this.#domThemeToggler.innerText = this.#strThemeLight;
         }
         return this.#bIsLightTheme;
     }
@@ -151,39 +156,8 @@ class ThemeHandler
         return this.#bIsLightTheme;
     }
 }
-class CustomThemeHandler extends ThemeHandler
-{
-    #domThemeToggler = document.querySelector(".container-theme-toggler");
 
-    #strThemeLight = "Light";
-    #strThemeDark = "Dark";
-    
-    constructor()
-    {
-        super();
-        this.#UpdateTheme();
-    }
-
-    #UpdateTheme()
-    {
-        if (super.bIsLightTheme)
-        {
-            this.#domThemeToggler.innerText = this.#strThemeDark;
-        }
-        else
-        {
-            this.#domThemeToggler.innerText = this.#strThemeLight;
-        }
-    }
-
-    Toggle()
-    {
-        super.Toggle();
-        this.#UpdateTheme();
-    }
-}
-
-let HandlerTheme = new CustomThemeHandler();
+let HandlerTheme = new ThemeHandler();
 document.querySelector(".container-theme-toggler").addEventListener("click", () => HandlerTheme.Toggle())
 
 let HandlerCalendar = new Calendar();
