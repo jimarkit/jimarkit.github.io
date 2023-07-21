@@ -153,9 +153,13 @@ class ThemeHandler
 }
 class CustomThemeHandler extends ThemeHandler
 {
+    #domThemeToggler = document.querySelector(".container-theme-toggler");
+    
     #strDimLight = "#ccc";
     #strDimDark = "#777";
-
+    #strThemeLight = "Light";
+    #strThemeDark = "Dark";
+    
     constructor()
     {
         super();
@@ -167,10 +171,12 @@ class CustomThemeHandler extends ThemeHandler
         if (super.bIsLightTheme)
         {
             super.domRoot.style.setProperty("--dim-color", this.#strDimLight);
+            this.#domThemeToggler.innerText = this.#strThemeLight;
         }
         else
         {
             super.domRoot.style.setProperty("--dim-color", this.#strDimDark);
+            this.#domThemeToggler.innerText = this.#strThemeDark;
         }
     }
 
