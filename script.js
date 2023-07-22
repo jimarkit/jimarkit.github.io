@@ -24,7 +24,6 @@ class Calendar
     #domYear = document.querySelector(".calendar-year");
     #domMonth = document.querySelector(".calendar-month");
     #domDates = document.querySelector(".calendar-dates");
-    #domTemplateDate = this.#domDates.children[0].cloneNode();
     #domTemplateDate = null;
 
     #domPrevMonth = document.querySelector(".btn-prev-month")
@@ -38,12 +37,8 @@ class Calendar
         }
         this.#RefreshCalendar();
 
-        this.#domPrevMonth.addEventListener("click", event => 
         if (this.#domPrevMonth)
         {
-            this.#SelectDate(this.#dateSelected.getFullYear(), this.#dateSelected.getMonth() - 1, this.#dateSelected.getDate());
-            this.#RefreshCalendar();
-        })
             this.#domPrevMonth.addEventListener("click", event => 
             {
                 this.#SelectDate(this.#dateSelected.getFullYear(), this.#dateSelected.getMonth() - 1, this.#dateSelected.getDate());
@@ -51,12 +46,8 @@ class Calendar
             })
         }
 
-        this.#domNextMonth.addEventListener("click", event => 
         if (this.#domNextMonth)
         {
-            this.#SelectDate(this.#dateSelected.getFullYear(), this.#dateSelected.getMonth() + 1, this.#dateSelected.getDate());;
-            this.#RefreshCalendar();
-        })
             this.#domNextMonth.addEventListener("click", event => 
             {
                 this.#SelectDate(this.#dateSelected.getFullYear(), this.#dateSelected.getMonth() + 1, this.#dateSelected.getDate());;
@@ -122,8 +113,6 @@ class Calendar
         }
 
         this.#domDates.children[dayToLeft - 1 + nDate].classList.add("calendar-date-hover");
-        this.#domMonth.innerText = this.#arrMonths[nMonth];
-        this.#domYear.innerText = nYear;
         if (this.#domMonth)
         {
             this.#domMonth.innerText = this.#arrMonths[nMonth];
