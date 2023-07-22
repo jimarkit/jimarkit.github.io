@@ -155,6 +155,10 @@ class ThemeHandler
     {
         this.#CheckPrefersColorScheme();
         this.#UpdateTheme();
+        if (this.#domThemeToggler)
+        {
+            this.#domThemeToggler.addEventListener("click", () => this.Toggle())
+        }
     }
 
     #CheckPrefersColorScheme()
@@ -169,13 +173,19 @@ class ThemeHandler
         {
             this.#domRoot.style.setProperty("--primary-color", this.#strBlack);
             this.#domRoot.style.setProperty("--background-color", this.#strWhite);
-            this.#domThemeToggler.innerText = this.#strThemeDark;
+            if (this.#domThemeToggler)
+            {
+                this.#domThemeToggler.innerText = this.#strThemeDark;
+            }
         }
         else
         {
             this.#domRoot.style.setProperty("--primary-color", this.#strWhite);
             this.#domRoot.style.setProperty("--background-color", this.#strBlack);
-            this.#domThemeToggler.innerText = this.#strThemeLight;
+            if (this.#domThemeToggler)
+            {
+                this.#domThemeToggler.innerText = this.#strThemeLight;
+            }
         }
         return this.#bIsLightTheme;
     }
@@ -189,6 +199,5 @@ class ThemeHandler
 }
 
 let HandlerTheme = new ThemeHandler();
-document.querySelector(".container-theme-toggler").addEventListener("click", () => HandlerTheme.Toggle())
 
 let HandlerCalendar = new Calendar();
