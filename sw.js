@@ -1,95 +1,107 @@
-const addResourcesToCache = async (resources) => 
+let listOldCache = ["v2"];
+let strCache = "v3";
+
+let listResources = [
+    "./",
+    "./icon.png",
+    "./index.html",
+    "./style.css",
+    "./script.js",
+]
+// =====================================================
+// install
+const CacheResources = async (listResources) => 
 {
-    const cache = await caches.open('v3');
-    await cache.addAll(resources);
+    const objCache = await caches.open(strCache);
+    await objCache.addAll(listResources);
 };
   
-const putInCache = async (request, response) => 
+self.addEventListener("install", (event) => 
 {
-    const cache = await caches.open('v3');
-    await cache.put(request, response);
+    event.waitUntil(CacheResources(listResources));
+});
+// =====================================================
+
+// =====================================================
+// activate
+const EnableNavigationPreload = async () => 
+{
+    if (self.registration.navigationPreload) 
+    {
+        await self.registration.navigationPreload.enable();
+    }
 };
   
-const cacheFirst = async ({ request, preloadResponsePromise, fallbackUrl }) => 
+const DeleteCache = async (key) => 
 {
-    // First try to get the resource from the cache
+    await caches.delete(key);
+};
+  
+const DeleteOldCaches = async () => 
+{
+    const listKeep = listOldCache;
+    const listKey = await caches.keys();
+    const listDelete = listKey.filter((key) => !listKeep.includes(key));
+    await Promise.all(listDelete.map(DeleteCache));
+};
+  
+self.addEventListener("activate", (event) => 
+{
+    event.waitUntil(EnableNavigationPreload());
+    event.waitUntil(DeleteOldCaches());
+});
+// =====================================================
+
+// =====================================================
+// fetch
+const CacheSingleResource = async (request, response) => 
+{
+    const objCache = await caches.open(strCache);
+    await objCache.put(request, response);
+};
+
+const Fetch = async ({request, responsePromise, responseFallback}) => 
+{
     const responseFromCache = await caches.match(request);
     if (responseFromCache) 
     {
         return responseFromCache;
     }
   
-    // Next try to use the preloaded response, if it's there
-    const preloadResponse = await preloadResponsePromise;
-    if (preloadResponse) 
+    const responseFromPreload = await responsePromise;
+    if (responseFromPreload) 
     {
-        console.info('using preload response', preloadResponse);
-        putInCache(request, preloadResponse.clone());
-        return preloadResponse;
+        CacheSingleResource(request, responseFromPreload.clone());
+        return responseFromPreload;
     }
   
-    // Next try to get the resource from the network
     try 
     {
         const responseFromNetwork = await fetch(request.clone());
-        // response may be used only once
-        // we need to save clone to put one copy in cache
-        // and serve second one
-        putInCache(request, responseFromNetwork.clone());
+        CacheSingleResource(request, responseFromNetwork.clone());
         return responseFromNetwork;
     } 
     catch (error) 
     {
-        const fallbackResponse = await caches.match(fallbackUrl);
-        if (fallbackResponse) 
+        const responseFromFallback = await caches.match(responseFallback);
+        if (responseFromFallback) 
         {
-            return fallbackResponse;
+            return responseFromFallback;
         }
-        // when even the fallback response is not available,
-        // there is nothing we can do, but we must always
-        // return a Response object
-        return new Response('Network error happened', 
-        {
+        return new Response("Request timeout", {
             status: 408,
-            headers: { 'Content-Type': 'text/plain' },
+            headers: {"Content-Type": "text/plain"},
         });
     }
 };
   
-const enableNavigationPreload = async () => 
+self.addEventListener("fetch", (event) => 
 {
-    if (self.registration.navigationPreload) 
-    {
-        // Enable navigation preloads!
-        await self.registration.navigationPreload.enable();
-    }
-};
-  
-self.addEventListener('activate', (event) => 
-{
-    event.waitUntil(enableNavigationPreload());
-});
-  
-self.addEventListener('install', (event) => 
-{
-    event.waitUntil(
-        addResourcesToCache([
-        './',
-        './icon.png',
-        './index.html',
-        './style.css',
-        './script.js',
-        ])
-    );
-});
-  
-self.addEventListener('fetch', (event) => 
-{
-    event.respondWith(
-        cacheFirst({
-        request: event.request,
-        preloadResponsePromise: event.preloadResponse,
-        fallbackUrl: './index.html',
+    event.respondWith(Fetch({
+            request: event.request,
+            responsePromise: event.preloadResponse,
+            responseFallback: "./index.html",
         })
     );
 });
+// =====================================================
