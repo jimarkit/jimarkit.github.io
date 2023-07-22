@@ -23,7 +23,7 @@ const RegisterServiceWorker = async () =>
       } 
       catch (error) 
       {
-        console.error(`Registration failed with ${error}`);
+        console.error(`Service worker failed registration with ${error}`);
       }
     }
 };

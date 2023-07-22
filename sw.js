@@ -1,4 +1,4 @@
-let strCache = "v4";
+let strCache = "v5";
 
 let listResources = [
     "./",
@@ -82,6 +82,7 @@ const Fetch = async ({request, responsePromise, responseFallback}) =>
     } 
     catch (error) 
     {
+        console.log(`Service worker failed with ${error}`)
         const responseFromFallback = await caches.match(responseFallback);
         if (responseFromFallback) 
         {
