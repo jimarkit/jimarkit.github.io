@@ -70,6 +70,7 @@ const Fetch = async ({request, responsePromise, responseFallback}) =>
     const responseFromPreload = await responsePromise;
     if (responseFromPreload) 
     {
+        console.log(`Service worker responded with preload`)
         CacheSingleResource(request, responseFromPreload.clone());
         return responseFromPreload;
     }
