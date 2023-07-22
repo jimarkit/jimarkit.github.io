@@ -67,17 +67,15 @@ const enableNavigationPreload = async () =>
   
 self.addEventListener('activate', (event) => 
 {
-    console.log("Service worker activate")
     event.waitUntil(enableNavigationPreload());
 });
   
 self.addEventListener('install', (event) => 
 {
-    console.log("Service worker install")
     event.waitUntil(
         addResourcesToCache([
         './',
-        './icon.jpg',
+        './icon.png',
         './index.html',
         './style.css',
         './script.js',
@@ -87,7 +85,6 @@ self.addEventListener('install', (event) =>
   
 self.addEventListener('fetch', (event) => 
 {
-    console.log("Service worker fetch")
     event.respondWith(
         cacheFirst({
         request: event.request,
