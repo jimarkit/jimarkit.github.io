@@ -1,5 +1,3 @@
-<<<<<<< Updated upstream
-=======
 const RegisterServiceWorker = async () => 
 {
     if ("serviceWorker" in navigator) 
@@ -16,7 +14,6 @@ const RegisterServiceWorker = async () =>
 };
 RegisterServiceWorker();
 
->>>>>>> Stashed changes
 class Calendar
 {
     #arrNumOfDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
