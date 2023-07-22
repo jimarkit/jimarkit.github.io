@@ -1,5 +1,4 @@
-let listOldCache = ["v2"];
-let strCache = "v3";
+let strCache = "v4";
 
 let listResources = [
     "./",
@@ -39,7 +38,7 @@ const DeleteCache = async (key) =>
   
 const DeleteOldCaches = async () => 
 {
-    const listKeep = listOldCache;
+    const listKeep = [strCache];
     const listKey = await caches.keys();
     const listDelete = listKey.filter((key) => !listKeep.includes(key));
     await Promise.all(listDelete.map(DeleteCache));
