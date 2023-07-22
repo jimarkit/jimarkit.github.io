@@ -59,7 +59,7 @@ const CacheSingleResource = async (request, response) =>
     await objCache.put(request, response);
 };
 
-const Fetch = async ({request, responsePromise, responseFallback}) => 
+const Fetch = async ({request, responsePromise}) =>
 {
     const responseFromCache = await caches.match(request);
     if (responseFromCache) 
@@ -70,25 +70,18 @@ const Fetch = async ({request, responsePromise, responseFallback}) =>
     const responseFromPreload = await responsePromise;
     if (responseFromPreload) 
     {
-        console.log(`Service worker responded with preload`)
         CacheSingleResource(request, responseFromPreload.clone());
         return responseFromPreload;
     }
   
-    try 
+    try
     {
         const responseFromNetwork = await fetch(request.clone());
         CacheSingleResource(request, responseFromNetwork.clone());
         return responseFromNetwork;
-    } 
-    catch (error) 
+    }
+    catch (error)
     {
-        console.log(`Service worker failed with ${error}`)
-        const responseFromFallback = await caches.match(responseFallback);
-        if (responseFromFallback) 
-        {
-            return responseFromFallback;
-        }
         return new Response("Request timeout", {
             status: 408,
             headers: {"Content-Type": "text/plain"},
@@ -101,7 +94,6 @@ self.addEventListener("fetch", (event) =>
     event.respondWith(Fetch({
             request: event.request,
             responsePromise: event.preloadResponse,
-            responseFallback: "./index.html",
         })
     );
 });
