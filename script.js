@@ -1,3 +1,22 @@
+<<<<<<< Updated upstream
+=======
+const RegisterServiceWorker = async () => 
+{
+    if ("serviceWorker" in navigator) 
+    {
+      try
+      {
+        await navigator.serviceWorker.register("/sw.js", {scope: "/"});
+      } 
+      catch (error) 
+      {
+        console.error(`Service worker failed registration with ${error}`);
+      }
+    }
+};
+RegisterServiceWorker();
+
+>>>>>>> Stashed changes
 class Calendar
 {
     #arrNumOfDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
@@ -9,29 +28,53 @@ class Calendar
     #domMonth = document.querySelector(".calendar-month");
     #domDates = document.querySelector(".calendar-dates");
     #domTemplateDate = this.#domDates.children[0].cloneNode();
+    #domTemplateDate = null;
 
     #domPrevMonth = document.querySelector(".btn-prev-month")
     #domNextMonth = document.querySelector(".btn-next-month")
 
     constructor()
     {
+        if (this.#domDates && this.#domDates.children.length > 0)
+        {
+            this.#domTemplateDate = this.#domDates.children[0].cloneNode();
+        }
         this.#RefreshCalendar();
 
         this.#domPrevMonth.addEventListener("click", event => 
+        if (this.#domPrevMonth)
         {
             this.#SelectDate(this.#dateSelected.getFullYear(), this.#dateSelected.getMonth() - 1, this.#dateSelected.getDate());
             this.#RefreshCalendar();
         })
+            this.#domPrevMonth.addEventListener("click", event => 
+            {
+                this.#SelectDate(this.#dateSelected.getFullYear(), this.#dateSelected.getMonth() - 1, this.#dateSelected.getDate());
+                this.#RefreshCalendar();
+            })
+        }
 
         this.#domNextMonth.addEventListener("click", event => 
+        if (this.#domNextMonth)
         {
             this.#SelectDate(this.#dateSelected.getFullYear(), this.#dateSelected.getMonth() + 1, this.#dateSelected.getDate());;
             this.#RefreshCalendar();
         })
+            this.#domNextMonth.addEventListener("click", event => 
+            {
+                this.#SelectDate(this.#dateSelected.getFullYear(), this.#dateSelected.getMonth() + 1, this.#dateSelected.getDate());;
+                this.#RefreshCalendar();
+            })
+        }
     }
 
     #RefreshCalendar()
     {
+        if (!this.#domTemplateDate)
+        {
+            return;
+        }
+
         let nYear = this.#dateSelected.getFullYear() 
         let nMonth = this.#dateSelected.getMonth() 
         let nDate = this.#dateSelected.getDate() 
@@ -84,6 +127,14 @@ class Calendar
         this.#domDates.children[dayToLeft - 1 + nDate].classList.add("calendar-date-hover");
         this.#domMonth.innerText = this.#arrMonths[nMonth];
         this.#domYear.innerText = nYear;
+        if (this.#domMonth)
+        {
+            this.#domMonth.innerText = this.#arrMonths[nMonth];
+        }
+        if (this.#domYear)
+        {
+            this.#domYear.innerText = nYear;
+        }
     }
 
     #SelectDate(nYear, nMonth, nDate)
